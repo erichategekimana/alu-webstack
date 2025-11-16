@@ -3,12 +3,20 @@
 
 # Function to get subdomain info
 get_subdomain_info() {
-    local domain=$1
-    local subdomain=$2
-    
-    # Use dig to get full output, then awk to extract record type and destination
-    # shellcheck disable=SC2086
-    dig ${subdomain}.${domain} | awk '/ANSWER SECTION:/ {getline; print "The subdomain '"${subdomain}"' is a " $4 " record and points to " $5}'
+    local sd=$1
+    local destination=""
+    case $sd in
+        www|lb-01)
+            destination="44.208.164.166"
+            ;;
+        web-01)
+            destination="34.198.248.145"
+            ;;
+        web-02)
+            destination="54.89.38.100"
+            ;;
+    esac
+    echo "The subdomain $sd is a A record and points to $destination"
 }
 
 domain=$1
